@@ -20,7 +20,13 @@ SECRET_KEY = config('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DJANGO_DEBUG', default=False)
 
-ALLOWED_HOSTS = [config('DOMAIN_NAME'), 'localhost', ]
+ALLOWED_HOSTS = [
+    config('DOMAIN_NAME'),
+    'localhost',
+    '0.0.0.0',  # noqa: S104
+    '127.0.0.1',
+    '[::1]',
+]
 
 # Application definition
 
@@ -134,6 +140,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+_COLLECTSTATIC_DRYRUN = config(
+    'DJANGO_COLLECTSTATIC_DRYRUN', cast=bool, default=False,
+)
+# Adding STATIC_ROOT to collect static files via 'collectstatic':
+STATIC_ROOT = '.static' if _COLLECTSTATIC_DRYRUN else '/var/www/django/static'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
