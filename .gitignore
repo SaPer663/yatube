@@ -111,6 +111,9 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+.env.*
+nginx.*
+.env.dev
 
 # Spyder project settings
 .spyderproject
@@ -154,3 +157,4 @@ media/
 */static/
 
 __requirements.txt
+yatube/config/.env.dev
