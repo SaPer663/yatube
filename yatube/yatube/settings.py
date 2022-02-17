@@ -158,15 +158,18 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+    '/var/www/django/static/',
+)
 _COLLECTSTATIC_DRYRUN = config(
     'DJANGO_COLLECTSTATIC_DRYRUN', cast=bool, default=False,
 )
 # Adding STATIC_ROOT to collect static files via 'collectstatic':
-STATIC_ROOT = '.static' if _COLLECTSTATIC_DRYRUN else '/var/www/django/static'
+STATIC_ROOT = '.static' if _COLLECTSTATIC_DRYRUN else '/var/www/django/static/'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = '/var/www/django/media'
 
 
 EMPTY_VALUE_DISPLAY = '-пусто-'
