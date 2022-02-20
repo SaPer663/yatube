@@ -160,7 +160,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
-    '/var/www/django/static/',
 )
 _COLLECTSTATIC_DRYRUN = config(
     'DJANGO_COLLECTSTATIC_DRYRUN', cast=bool, default=False,

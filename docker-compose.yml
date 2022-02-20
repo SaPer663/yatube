@@ -38,6 +38,7 @@ services:
     volumes:
       - django-static:/var/www/django/static
       - django-media:/var/www/django/media
+      - logs/:/var/log/nginx/
     
     depends_on:
       - web
