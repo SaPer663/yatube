@@ -33,21 +33,34 @@ services:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
       - ./yatube/config/.env.prod
-  nginx:
-    build: ./nginx
-    env_file:
-      - ./yatube/config/.env.prod
-    networks:
-      - backend
+  caddy:
+    image: "caddy:2.2.1"
+    restart: unless-stopped
+    env_file: ./yatube/config/.env.prod
     volumes:
-      - django-static:/var/www/django/static
-      - django-media:/var/www/django/media
-      - "./logs/:/var/log/nginx/"
-    
+      - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile  # configuration
+      - caddy-config:/config  # configuration autosaves
+      - django-static:/var/www/django/static  # serving django's statics
+      - django-media:/var/www/django/media  # serving django's media
+  
     depends_on:
       - web
+  # nginx:
+  #   build: ./nginx
+  #   env_file:
+  #     - ./yatube/config/.env.prod
+  #   networks:
+  #     - backend
+  #   volumes:
+  #     - django-static:/var/www/django/static
+  #     - django-media:/var/www/django/media
+  #     - "./logs/:/var/log/nginx/"
+    
+  #   depends_on:
+  #     - web
 
 volumes:
   postgres_data:
   django-media:
   django-static:
+
