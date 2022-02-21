@@ -33,6 +33,8 @@ services:
       - ./yatube/config/.env.prod
   nginx:
     build: ./nginx
+    tty: true
+    entrypoint: 'su-exec nobody /usr/sbin/nginx -g "daemon off;"'
     env_file:
       - ./yatube/config/.env.prod
     volumes:
