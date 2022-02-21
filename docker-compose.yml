@@ -17,8 +17,6 @@ services:
     volumes:
       - django-static:/var/www/django/static
       - django-media:/var/www/django/media
-    networks:
-      - backend
     expose:
       - 8000
     env_file:
@@ -29,6 +27,7 @@ services:
       - db
   db:
     image: postgres:13.0-alpine
+    restart: unless-stopped
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
@@ -37,8 +36,7 @@ services:
     build: ./nginx
     env_file:
       - ./yatube/config/.env.prod
-    networks:
-      - backend
+    restart: unless-stopped
     volumes:
       - django-static:/var/www/django/static
       - django-media:/var/www/django/media
