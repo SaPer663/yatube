@@ -34,5 +34,5 @@ python /code/yatube/manage.py collectstatic --noinput
   --bind='0.0.0.0:8000' `# Run Django on 8000 port` \
   --chdir='/code/yatube'       `# Locations` \
   --log-file=- \
-  ----access-logfile=- \
+  --access-logfile=- \
   --worker-tmp-dir='/dev/shm'
