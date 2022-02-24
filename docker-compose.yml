@@ -37,7 +37,7 @@ services:
       - caddy
     labels:
       caddy: saper663.ru
-      caddy.reverse_proxy: "{{upstreams 8000}}"
+      caddy.reverse_proxy: "{{upstreams 80}}"
     volumes:
       - django-static:/var/www/django/static
       - django-media:/var/www/django/media
