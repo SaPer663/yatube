@@ -1,9 +1,5 @@
 version: '3.8'
 
-networks:
-  default:
-    external:
-      name: nginx-proxy
 
 services:
   web:
@@ -37,6 +33,11 @@ services:
     env_file:
       - ./yatube/config/.env.prod
     restart: unless-stopped
+    networks:
+      - caddy
+    labels:
+      caddy: saper663.ru
+      caddy.reverse_proxy: "{{upstreams 8000}}"
     volumes:
       - django-static:/var/www/django/static
       - django-media:/var/www/django/media
@@ -44,6 +45,9 @@ services:
     
     depends_on:
       - web
+networks:
+  caddy:
+    external: true
 
 volumes:
   postgres_data:
