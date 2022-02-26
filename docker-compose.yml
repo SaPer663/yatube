@@ -12,7 +12,10 @@ services:
     command: sh ./yatube/docker/gunicorn.sh
     networks:
       - dbnet
-      - backnet
+      - caddy
+    labels:
+      caddy: saper663.ru
+      caddy.reverse_proxy: "{{upstreams}}"  
     volumes:
       - django-static:/var/www/django/static
       - django-media:/var/www/django/media
@@ -33,29 +36,29 @@ services:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
       - ./yatube/config/.env.prod
-  nginx:
-    build: ./nginx
-    env_file:
-      - ./yatube/config/.env.prod
-    restart: unless-stopped
-    networks:
-      - caddy
-      - backnet
-    labels:
-      caddy: saper663.ru
-      caddy.reverse_proxy: "{{upstreams http 80}}"
-    volumes:
-      - django-static:/var/www/django/static
-      - django-media:/var/www/django/media
-      - "./logs/:/var/log/nginx/"
+  # nginx:
+  #   build: ./nginx
+  #   env_file:
+  #     - ./yatube/config/.env.prod
+  #   restart: unless-stopped
+  #   networks:
+  #     - caddy
+  #     - backnet
+  #   labels:
+  #     caddy: saper663.ru
+  #     caddy.reverse_proxy: "{{upstreams http 80}}"
+  #   volumes:
+  #     - django-static:/var/www/django/static
+  #     - django-media:/var/www/django/media
+  #     - "./logs/:/var/log/nginx/"
     
-    depends_on:
-      - web
+  #   depends_on:
+  #     - web
 networks:
   caddy:
     external: true
   dbnet:
-  backnet:
+  # backnet:
 
 volumes:
   postgres_data:
