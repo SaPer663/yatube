@@ -1,48 +1,29 @@
 version: '3.8'
 
 services:
+  db:
+    image: postgres:13.0-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - ./yatube/config/.env.dev
+  
   web:
     build:
       context: .
       dockerfile: ./yatube/docker/Dockerfile
-      target: production_build
-      args:
-        DJANGO_ENV: production
-    command: sh ./yatube/docker/gunicorn.sh
+    command: python -Wd ./yatube/manage.py runserver 0.0.0.0:8000
     volumes:
-      - django-static:/var/www/django/static
-      - django-media:/var/www/django/media
-    expose:
-      - 8000
+      - ./app/:/usr/src/app/
+    ports:
+      - 8000:8000
     env_file:
-      - ./yatube/config/.env.prod
+      - ./yatube/config/.env.dev
     environment:
-      DJANGO_DATABASE_HOST: db
+        DJANGO_DATABASE_HOST: db
     depends_on:
       - db
-  db:
-    image: postgres:13.0-alpine
-    restart: unless-stopped
-    volumes:
-      - postgres_data:/var/lib/postgresql/data/
-    env_file:
-      - ./yatube/config/.env.prod
-  nginx:
-    build: ./nginx
-    ports:
-      - 8000:80
-    env_file:
-      - ./yatube/config/.env.prod
-    restart: unless-stopped
-    volumes:
-      - django-static:/var/www/django/static
-      - django-media:/var/www/django/media
-      - "./logs/:/var/log/nginx/"
-    
-    depends_on:
-      - web
+  
 
 volumes:
   postgres_data:
-  django-media:
-  django-static:
